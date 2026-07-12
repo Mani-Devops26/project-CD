@@ -14,11 +14,11 @@ spec:
         app: db
     spec:
       containers:
-        - name: mysql
+        - name: dbcont
           image: manikantapaila/python:php.mydb
           ports:
             - containerPort: 3306
-
+               name: mysql
           envFrom:
             - secretRef:
                 name: secret1
