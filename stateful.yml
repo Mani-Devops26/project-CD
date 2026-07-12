@@ -1,10 +1,9 @@
----
 apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: mysql
 spec:
-  serviceName : db-service
+  serviceName: db-service
   replicas: 1
   selector:
     matchLabels:
@@ -15,37 +14,34 @@ spec:
         app: db
     spec:
       containers:
-        - name: cont1
+        - name: mysql
           image: manikantapaila/python:php.mydb
           ports:
             - containerPort: 3306
 
-
           envFrom:
-             - secretRef:
-                  name: secret1
+            - secretRef:
+                name: secret1
 
           resources:
-              requests:
-                  cpu: "100m"
-                  memory: "128Mi"
-              limits:
-                  cpu: "200m"
-                  memory: "256Mi"
+            requests:
+              cpu: "100m"
+              memory: "128Mi"
+            limits:
+              cpu: "200m"
+              memory: "256Mi"
 
           volumeMounts:
             - name: mysql-data
-              mountPath: /usr/share/nginx/html/
+              mountPath: /var/lib/mysql
 
-   volumeClaimTemplates:
-      - metadata:
-          name: mysql-data
-
-        spec:
-           accessModes:
-            - ReadWriteOnce
-
-           storageClassName: gp2
-           resources:
-             requests:
-                storage: 2Gi
+  volumeClaimTemplates:
+    - metadata:
+        name: mysql-data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        storageClassName: gp2
+        resources:
+          requests:
+            storage: 2Gi
